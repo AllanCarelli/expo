@@ -4,7 +4,10 @@ import random
 
 
 class Pokemon:
-    def __init__(self, lvl: int, name: str, health: int, type: str, attacks: list, strength: int, defense: int, special_strength: int, special_defense: int, speed: int) -> None:
+    """
+    Class representation of a Pokemon.
+    """
+    def __init__(self, lvl: int, name: str, health: int, type: str, attacks: list, strength: int, defense: int, special_strength: int, special_defense: int, evasive: int = 100) -> None:
         self.lvl = lvl
         self.name = name
         self.health = health
@@ -14,9 +17,19 @@ class Pokemon:
         self.defense = defense
         self.special_strength = special_strength
         self.special_defense = special_defense
-        self.evasive = 100
+        self.evasive = evasive
 
     def attack(self, attack: Attack, enemy: Pokemon) -> bool:
+        """
+        attack method that decides what to do with an given Attack Object.
+        
+        input:
+        attack - Attack Object
+        enemy - Pokemon Object
+        
+        output:
+        bool - returns if sucessfull or not
+        """
         if attack.use == "attack":
             return enemy.receive_damage(attack,self.strength)
         elif attack.use == "buff":
@@ -25,7 +38,17 @@ class Pokemon:
             return enemy.use_special(attack)
     
     def receive_damage(self, attack: Attack, enemy_strength: int) -> bool:
-        type_multiplier = return_mutliplier(attack.type,self.type)
+        """
+        method that calculates the amount of damage received from an attack and then subtracts on its own health.
+
+        input:
+        attack - Attack Object
+        enemy_strength - amount of strength that the Pokemon Object who called the method have
+
+        output:
+        bool - return if sucessfull or not
+        """
+        type_multiplier = return_mutliplier(attack,self.type)
         damage = ((2 * self.lvl / 5 + 2) * attack.power * (enemy_strength/self.defense)) / 50 + 2
         random_multiplier = random.choice([1,0.85,0.925])
 
@@ -36,6 +59,15 @@ class Pokemon:
         return True
 
     def use_special(self, attack: Attack) -> bool:
+        """
+        calculates what atributes will be buffed by an special attack
+
+        input:
+        attack - Attack Object
+    
+        output:
+        bool - returns if sucesssfull or not
+        """
         if attack.special_atribute == "strength":
             self.strength *= attack.special_buff
         if attack.special_atribute == "defense":
@@ -46,4 +78,5 @@ class Pokemon:
             self.special_defense *= attack.special_buff
         if attack.special_atribute == "speed":
             self.speed *= attack.special_buff
+        return True
         

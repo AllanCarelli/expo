@@ -1,4 +1,7 @@
 class Attack:
+    """
+    Attack class to represent an Attack that will be used in Pokemon Battle.
+    """
     def __init__(self, type: str, use: str, attack_type: str, accuracy: float, power: int = 0, special_buff: int = 0, special_atribute: str = None) -> None:
         self.power = power
         self.type = type
